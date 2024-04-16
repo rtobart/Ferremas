@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container py-5">
+    <section class="card card-body">   
+        <div class="text-center mb-4">
+            <h2 class="display-4 fw-bold">Resultados de la búsqueda para "{{ query }}"</h2>
+        </div>
+        <br>
+        {% if resultados %}
+            <div class="row row-cols-2">
+                {% for resultado in resultados %}
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h2>{{ resultado.titulo }}</h2>
+                                <p>Usuario: {{ resultado.user.username }}</p>
+                                <p>Categoría: {{ resultado.id_categoria.categoria }}</p>
+                                <a href="{% url 'detalle' resultado.id %}">
+                                    {% if resultado.imagen %}
+                                    <img src="{{ resultado.imagen.url }}" alt="{{ resultado.titulo }}" class="img-fluid">
+                                    {% else %}
+                                    <p>No hay imagen disponible</p>
+                                    {% endif %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No se encontraron resultados.</p>
+        {% endif %}
+    </section>
+</main>
+{% endblock %}

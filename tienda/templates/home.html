@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <main class="container">
+        <h1 class="text-center">Bienvenido a la tienda Ferremas</h1>
+        <p class="text-center">Aquí encontrarás los productos que necesitas</p>
+        <h2 class="text-center">Productos Destacados</h2>
+        <br>
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    {% for producto in productos %}
+                        {% if not forloop.last %}
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter|add:1 }}"></button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner">
+                    {% for producto in productos %}
+                        {% if forloop.first %}
+                            <div class="carousel-item active">
+                        {% else %}
+                            <div class="carousel-item">
+                        {% endif %}
+                            <a href="{% url 'detalle' producto.id  %}">
+                                <img src="{{ MEDIA_URL }}media/{{ producto.imagen }}" class="d-block carousel-image" alt="...">
+                            </a>
+                            </div>
+                    {% endfor %}
+                </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
+            </div>
+            <section class="card card-body"> 
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="text-center">Categorías</h2>
+                        <ul class="list-group">
+                            {% for categoria in categorias %}
+                                <li class="list-group-item"><a href="{% url 'productos_por_categoria' categoria.id_categoria %}">{{ categoria.categoria }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        <br>
+    </main>
+{% endblock %}

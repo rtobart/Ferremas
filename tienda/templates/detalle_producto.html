@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+    {% if user.is_superuser%}
+        <main class="container">
+            <div class="row">
+                <section class="col-md-4 offset-md-4">
+                    <div style="display: block; margin: 0 auto;">
+                        <h1 style="text-align: center;">{{product.titulo}}</h1>
+                    </div>
+                    {{error}}
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button>
+                            Actualizar
+                        </button>
+                    </form>
+                    {% comment %} <form action="{% url 'crear' product.id %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <button>
+                            Crear
+                        </button>
+                    </form> {% endcomment %}
+
+                    {% comment %} <form action="{% url 'borrar' product.id %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <button>
+                            Borrar
+                        </button>
+                    </form> {% endcomment %}
+                </section>
+            </div> 
+        </main>
+
+    {% else %}
+
+        <main class="container">
+            <div class="row">
+                <section class="col-md-4 offset-md-4">
+                    <div style="display: block; margin: 0 auto;">
+                        <h1 style="text-align: center;">{{product.titulo}}</h1>
+                    </div>
+                    {{error}}
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            {% if field.name != 'aprobado' and field.name != 'relevante' %}
+                                {{ field.label_tag }}
+                                {% if field.name == 'comentario' %}
+                                    {{ field.value }}
+                                {% else %}
+                                    {{ field }}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        <button type="submit">Actualizar</button>
+                    </form>
+                    
+                </section>
+            </div> 
+        </main>
+    {% endif%}
+
+{% endblock %}

@@ -1,0 +1,224 @@
+@media screen and (max-width: 768px) {
+    .container {
+        max-width: 100%;
+    }
+}
+
+
+.btn-outline-success {
+    color: #100e8f;
+    border-color: #0d0338;
+}
+
+.btn-outline-success:hover {
+    background-color: #100e8f; /* Reemplaza #desiredColor con el color que quieras */
+    border-color: #0d0338; /* Reemplaza #desiredColor con el color que quieras */
+}
+
+.container img {
+    max-width: auto;
+    height: auto;
+}
+/* Ajuste del margen derecho para la imagen del logo */
+.logo-img {
+    margin-right: 0; /* Anula el margen derecho predeterminado */
+    margin-left: auto; /* Centra la imagen horizontalmente */
+}
+
+/* Asegúrate de que el margen predeterminado de los enlaces se establezca en 0 */
+.navbar-nav a {
+    margin-right: 0;
+}
+
+
+/* Ajuste del margen derecho para la imagen del logo */
+.navbar-brand img.logo-img {
+    margin-right: 0; /* Anula el margen derecho predeterminado */
+    margin-left: auto; /* Centra la imagen horizontalmente */
+}
+
+/* Reducción del tamaño de la etiqueta <a> en la barra de navegación */
+.navbar-nav .nav-link {
+    font-size: 0.9rem; /* Ajusta el tamaño de la fuente según sea necesario */
+}
+
+.navbar {
+    display: flex;
+    align-items: center; /* Esto centrará verticalmente los elementos dentro de la barra de navegación */
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+nav {
+    background-color: rgb(145, 145, 145);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1px;
+    max-height: min-content;
+}
+
+nav a {
+    border-radius: 5px;
+    border: 1px solid rgb(4, 2, 126);
+}
+
+nav a:hover {
+    background-color: rgb(4, 2, 126);
+}
+
+.carousel-inner {
+    min-height: 560px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: rgb(0, 0, 0);
+}
+
+.carousel-image {
+    width: 30%;
+    height: 30%;
+    margin: auto;
+}
+
+.carousel-item {
+    text-align: left;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    font-family: Arial, sans-serif;
+}
+
+form.sin-estilo {
+    /* Anula los estilos para el formulario con la clase "sin-estilo" */
+    display: initial;
+    flex-direction: initial;
+    align-items: initial;
+    margin-top: initial;
+    font-family: initial;
+}
+
+label {
+    font-weight: bold;   
+}
+
+input {
+    padding: 10px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+
+input[type="submit"] {
+    background-color: wheat;
+    color: rgb(14, 119, 70);
+    cursor: pointer;
+    font-weight: bold;
+    border: 1px solid rgb(14, 119, 70);
+}
+
+input[type="submit"]:hover {
+    background-color: rgb(14, 119, 70);
+    color: rgb(2, 2, 2);
+    border: none;
+    border: 1px solid rgb(14, 119, 70);
+}
+
+.btn-volver {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: rgb(145, 145, 145);
+    color: rgb(4, 2, 126);
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid rgb(4, 2, 126);
+    font-weight: bold;
+}
+
+.btn-volver:hover {
+    background-color: rgb(4, 2, 126);
+    color: rgb(14, 12, 12);
+    border: none;
+}
+
+/* MENSAJE ERROR (LOGIN) */
+.error {
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    -o-box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    background: rgb(196, 11, 11);
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    color: #fff;
+    display: none;
+    font-size: 14px;
+    margin-top: -45px;
+    margin-left: 220px;
+    padding: 10px;
+    position: absolute;
+}
+
+.nav-item {
+    margin-right: 5px;
+}
+
+#dropdown a {
+    background-color: rgb(145, 145, 145);
+    color: rgb(4, 2, 126);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    max-height: min-content;
+}
+
+#dropdown a:hover {
+    background-color: rgb(145, 145, 145);
+    color: rgb(0, 0, 0);
+}
+
+.tab {
+    background-color: rgb(145, 145, 145);
+    color: rgb(0, 0, 0);
+    border: 3px solid rgb(51, 51, 51);
+}
+
+footer {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    margin: 0 30px;
+    color: black;
+}
+
+footer.bottom {
+    padding: 20px 0;
+    justify-content: space-between;
+}
+
+footer .legal {
+    font-size: 12px;
+    align-items: center;
+}
+
+footer .legal > a {
+    margin: 0 4px;
+    text-decoration: none;
+    color: black;
+}
+
+footer .legal > span {
+    margin-right: 10px;
+}
+
+footer.bottom .links {
+    display: flex;
+    gap: 18px;
+}

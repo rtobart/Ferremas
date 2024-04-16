@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container py-5">
+  <section class="card card-body">
+    <div class="row">
+      <div class="col-md-10 offset-md-1">
+        <h1 class="text-center display-3 py-5">Carrito de Compras</h1>
+  
+        {% if items %}
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Artículo</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio Unitario</th>
+                <th scope="col">Subtotal</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in items %}
+                <tr>
+                  <td>
+                    <a href="{% url 'detail' item.id  %}">
+                      <img src="{{ item.producto.imagen.url }}" alt="{{ item.product.titulo }}" width="100" height="100">
+                    </a>
+                  </td>
+                  <td>{{ item.producto.titulo }}</td>
+                  <td>{{ item.cantidad }}</td>
+                  <td>${{ item.precio_unitario}}</td>
+                  <td>${{ item.subtotal }}</td>
+                  <td>
+                    <a href="{% url 'eliminar_del_carrito' item.id %}" class="btn btn-danger">Eliminar</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+  
+          <div class="text-center">
+            <a href="{% url 'vaciar_carrito' %}" class="btn btn-warning">Vaciar Carrito</a>
+            <!-- Agrega aquí el enlace u API para realizar la compra -->
+          </div>
+          <div class="col-md-12" style="display: flex; flex-direction: column; align-items: flex-end">
+            <p>Total: ${{ total_carrito }}</p>
+          </div>
+          
+        {% else %}
+          <p class="text-center">Tu carrito está vacío.</p>
+        {% endif %}
+        <div style="display: flex; justify-content: center;">
+          <a href="{% url 'productos'  %}" class="btn-volver">Seguir agregando obras</a>
+      </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
