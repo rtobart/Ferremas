@@ -1,5 +1,42 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <!-- Your content goes here -->
+    <main class="container">
+        <h1 class="text-center">Productos</h1>
+        <br>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for producto in productos %}
+
+                <div class="col">
+                  <div class="card">
+                    <a href="{% url 'detalle' producto.id  %}">
+                        <img src="{{ MEDIA_URL }}/media/{{ producto.imagen }}"class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text">{{ producto.descripcion }}</p>
+                      <p class="card-text">Precio: ${{ producto.precio }}</p>
+                    </div>
+                  </div>
+                </div>
+              
+
+
+            {% comment %} <div class="col">
+                <div class="card">
+                    <a href="{% url 'detalle' producto.id  %}">
+                        <img src="{{ MEDIA_URL }}/media/{{ producto.imagen }}"class="d-block carousel-image" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Artículo {{ counter }}: {{ producto.titulo }}</h5>
+                        <p class="card-text">{{ producto.descripcion }}</p>
+                        <p class="card-text">Precio: ${{ producto.precio }}</p>
+                        <div class="card-footer">
+                            <small class="text-muted">Subido: {{ producto.user.username }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+        {% endfor %}
+        </div>
 {% endblock %}

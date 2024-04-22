@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import IntegrityError
 from django.db.models import Q
 from .forms import ProductoForm
+import locale
 
 
 def home(request): #Solo inicio de la página
@@ -32,6 +33,18 @@ def home(request): #Solo inicio de la página
             #'usuarios': usuarios
         }
         return render(request, 'home.html', context)
+    
+def productos(request):
+    productos = Producto.objects.all()
+    categorias = Categoria.objects.all()
+    context = {
+        'productos': productos,
+        'categorias': categorias
+    }
+    return render(request, 'productos.html', context)
+    
+    
+    
     
 #@login_required   #Desactivado para pruebas    
 def registrar(request):
@@ -144,6 +157,8 @@ def actualizar(request, product_id):
 def productos_por_categoria(request, categoria_id):
     categoria = get_object_or_404(Categoria, id_categoria=categoria_id)
     productos_categoria = Producto.objects.filter(id_categoria=categoria)
+    for producto in productos_categoria:
+        producto.precio_formateado = locale.format_string("%d", producto.precio, grouping=True)
 
     context = {
         'categorias': categoria,
