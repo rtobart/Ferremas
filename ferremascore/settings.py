@@ -14,7 +14,6 @@ from pathlib import Path
 import os
 from ..dbconfig import NAME, USER, PASSWORD, HOST, PORT
 from django.conf.locale.en import formats as en_formats
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -73,26 +72,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ferremascore.wsgi.application'
 
-
-# Base de Datos, en este caso PostgreSQL
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': NAME,
+#         'USER': USER,
+#         'PASSWORD': PASSWORD,
+#         'HOST': HOST,
+#         'PORT': PORT,
 #     }
 # }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': NAME,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
-        'HOST': HOST,
-        'PORT': PORT,
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

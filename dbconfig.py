@@ -1,5 +1,0 @@
-NAME = 'ferreteria_db'
-USER = 'ferreteria_user'
-PASSWORD = '0410'
-HOST = 'localhost'
-PORT = '5432'
