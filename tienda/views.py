@@ -70,12 +70,36 @@ def registrar(request):
                 })  
    
 def carrito(request):
-    if request.user.is_superuser or request.user.is_staff:
-        return render(request, 'home.html') #Revisar si se puede redirigir a otra página
-    else:
-        items = CarritoItem.objects.all()
-        total_carrito = sum(item.subtotal() for item in items)
-        return render(request, 'carrito.html', {'items': items, 'total_carrito': total_carrito})
+    items = CarritoItem.objects.all()
+    total_carrito = sum(item.subtotal() for item in items)
+    return render(request, 'carrito.html', {'items': items, 'total_carrito': total_carrito})
+
+    
+def agregar_al_carrito(request, id): # Falta agregar de que no redirija y solo lo agregue al carrito mostrando un mensaje de que se agrego algo blabla.
+    product = get_object_or_404(Producto, pk=id)
+    User = get_user_model()
+    user = User.objects.get_or_create(username='usuario_anonimo')[0]
+
+    carrito_item, created = CarritoItem.objects.get_or_create(
+        producto=product,
+        usuario=user,
+        precio_unitario=product.precio  # Asignar el precio del post al campo precio_unitario
+    )
+
+    if not created:
+        carrito_item.cantidad += 1
+        carrito_item.save()
+
+    return redirect('carrito')
+
+def eliminar_del_carrito(request, carritoitem_id):
+    carrito_item = get_object_or_404(CarritoItem, pk=carritoitem_id)
+    carrito_item.delete()
+    return redirect('carrito')
+
+def vaciar_carrito(request):
+    CarritoItem.objects.all().delete()
+    return redirect('carrito')
 
 def ingreso(request):
     if request.method == 'GET':
@@ -104,10 +128,10 @@ def cerrar(request):
 def crear(request):
     if request.method == 'POST':
         try:
-            form = ProductoForm(request.POST, request.FILES)  # Agregar request.FILES al inicializar el formulario
+            form = ProductoForm(request.POST, request.FILES)
             rol = request.user.rol
             if form.is_valid():
-                if user_passes_test(rol == 'admin' or rol == 'bodeguero' or rol == 'vendedor'):
+                if user_passes_test(rol == 'admin' or rol == 'bodeguero' or rol == 'vendedor'): # Revisar condiciones
                     new_product = form.save(commit=False)
                     new_product.user = request.user
                     new_product.save()
@@ -166,8 +190,20 @@ def productos_por_categoria(request, categoria_id):
     }
     return render(request, 'productos_por.html', context)   
    
-   
-        
+def contacto(request):
+    return render(request, 'contacto.html', { 
+    })
+    # if request.method == 'POST':
+
+    #     return render(request, 'contacto.html', {
+            
+    #         'mensaje': 'Enviado Correctamente',
+    #         'script' : 'window.onload = function() {formu()};'      
+    #     }, print(request.POST))
+    # else:
+    #     return render(request, 'contacto.html', { 
+    #     })  
+    
 def buscar(request):
     if request.method == 'GET':
         query = request.GET.get("q")

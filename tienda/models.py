@@ -17,7 +17,7 @@ class CustomUser(AbstractUser):
 # Create your models here.
 class Categoria(models.Model):
     id_categoria  = models.AutoField(db_column='idCategoria', primary_key=True) 
-    categoria     = models.CharField(max_length=20, blank=False, null=False)
+    categoria     = models.CharField(max_length=30, blank=False, null=False)
 
     def __str__(self):
         return str(self.categoria)

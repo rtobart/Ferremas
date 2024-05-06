@@ -9,7 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('productos/', views.productos, name='productos'),
-    path('contacto/', views.home, name='contacto'),
+    path('contacto/', views.contacto, name='contacto'),
     path('registrar/', views.registrar, name='registrar'),
     path('ingreso/', views.ingreso, name='ingreso'),
     path('cerrar/', views.cerrar, name='cerrar'),
@@ -20,5 +20,9 @@ urlpatterns = [
     path('detalle/<int:product_id>/', views.detalle, name='detalle'),
     path('categoria/<int:categoria_id>/', views.productos_por_categoria, name='productos_por_categoria'),
     path('carrito/', views.carrito, name='carrito'),
+    path('carrito/agregar/<int:id>/', views.agregar_al_carrito, name='agregar_al_carrito'),
+    path('carrito/eliminar/<int:carritoitem_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
+    path('carrito/vaciar/', views.vaciar_carrito, name='vaciar_carrito'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

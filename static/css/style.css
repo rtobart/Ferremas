@@ -4,6 +4,17 @@
     }
 }
 
+.stock-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+
 
 .btn-outline-success {
     color: #100e8f;
