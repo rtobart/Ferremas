@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+    <main class="container py-5">
+        <section class="card card-body">
+        <div class="d-flex justify-content-center">
+            <div>
+            <h2 class="text-center">Formulario de Contacto</h2>
+            <br>
+            <form method="POST">
+                {% csrf_token %}
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required><br>
+ 
+                <label for="Apellidos">Apellidos:</label>
+                <input type="text" id="apellidos" name="apellidos" required><br>
+    
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}" title="El teléfono debe tener 9 números" required placeholder="Ej: 937805787"><br>
+    
+                <label for="email">Correo electrónico:</label>
+                <input type="email" id="email" name="email" required><br>
+    
+                <label for="mensaje">Mensaje:</label><br>
+                <textarea id="mensaje" name="mensaje" rows="4" required></textarea><br>
+    
+                <input type="submit" value="Enviar">
+            </form>
+            <br>
+            <h2 class="text-center">{{mensaje}}</h2>
+            <script>{{script}}</script>
+            </div>
+            <div class="col-md-4" style="display: flex; flex-direction: column; align-items: flex-end">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.6199002623!2d-70.61684182338621!3d-33.433152696628234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662cf7b9566d44f%3A0x5c1618bbd02ec418!2sAntonio%20Varas%20666%2C%20Providencia%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses!2scl!4v1683850064969!5m2!1ses!2scl" width="450" height="450" style="border:3px solid; margin: auto; padding: 5px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            
+        </div>
+        </section>
+        <section class="card card-body">
+            <div class="text-center">
+                <button onclick="NumAleatorio()">Quiero saber mi suerte</button>
+                <p id="resultado"></p>
+            </div>
+        </section>
+    </main>
+  
+{% endblock %}

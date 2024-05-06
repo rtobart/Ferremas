@@ -1,2 +1,4 @@
 /env
 /media/productos/*
+.env
+db.sqlite3

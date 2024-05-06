@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load humanize%}
 {% block content%}
     <section class="card card-body">
         <h2 style="display: block; margin: 0 auto; color: rgb(14, 119, 70);"><q>{{product.titulo}}</q></h2>
@@ -27,7 +27,7 @@
                         <h6>Precio: </h6>
                     </div>
                     <div class="col-md-8" style="background-color: white; border: 1px solid grey;">
-                        ${{product.precio}}
+                        ${{product.precio|intcomma}}
                     </div>
                 </div>
                 <div class="row justify-content-center">
@@ -40,7 +40,6 @@
                 </div>
             </div>
             <div>
-                <!--INCLUÍ UN BOTÓN DE VOLVER ATRÁS, SENTÍ QUE HACÍA FALTA-->
                 <br>
                 <button onclick="goBack()" class="btn-volver">Volver atrás</button>
                 <script>
