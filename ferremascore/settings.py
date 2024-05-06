@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from ..dbconfig import NAME, USER, PASSWORD, HOST, PORT
 from django.conf.locale.en import formats as en_formats
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -85,11 +86,11 @@ WSGI_APPLICATION = 'ferremascore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ferreteria_db',
-        'USER': 'ferreteria_user',
-        'PASSWORD': '0410',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': NAME,
+        'USER': USER,
+        'PASSWORD': PASSWORD,
+        'HOST': HOST,
+        'PORT': PORT,
     }
 }
 
