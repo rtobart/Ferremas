@@ -7,12 +7,45 @@ from django.db import IntegrityError
 from django.db.models import Q
 from .forms import ProductoForm
 import locale
+from datetime import datetime
+import requests
+from django.http import JsonResponse
+
+def actualizar_moneda(request):
+    valor_dolar = moneda()
+    return JsonResponse({'valor_dolar': valor_dolar})
+
+def obtener_fecha_actual():
+    return datetime.now().strftime('%d-%m-%Y')
+
+fecha_hoy = obtener_fecha_actual()
+urlapiusd = f'https://mindicador.cl/api/dolar/{fecha_hoy}'
+
+def moneda():
+    global fecha_hoy
+    global urlapiusd
+    hoy = obtener_fecha_actual()
+    
+    if hoy != fecha_hoy:
+        print(f"Fecha actual diferente a la fecha almacenada se acutaliza la fecha a {hoy}")
+        fecha_hoy = hoy
+        urlapiusd = f'https://mindicador.cl/api/dolar/{fecha_hoy}'
+
+    response = requests.get(urlapiusd)
+    data = response.json()
+    valorusd = None
+
+    if response.status_code == 200:
+        valorusd = data["serie"][0]["valor"]
+        print("Valor del dólar:", valorusd)
+    else:
+        print("No se pudo obtener el valor del dólar")
+    return (valorusd)
 
 
 def home(request): #Solo inicio de la página
     productos = Producto.objects.filter(aprobado=True, relevante=True).order_by('-aprobado')
     categorias = Categoria.objects.all()
-    usuarios = CustomUser.objects.all()
     
     if request.user.is_authenticated:
         user = request.user

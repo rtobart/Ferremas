@@ -1,36 +1,57 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% block content %}
-    <main class="container">
-        <h1 class="text-center">Productos</h1>
-        <br>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for producto in productos %}
-
-                <div class="col">
-                  <div class="card">
-                    <a href="{% url 'detalle' producto.id  %}">
-                        <img src="{{ MEDIA_URL }}/media/{{ producto.imagen }}"class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body">
-                      <h5 class="card-title">{{producto.titulo}}</h5>
-                      <p class="card-text">{{ producto.descripcion }}</p>
-                      <ul class = "list-group list-group-flush">
-                        <li class="list-group-item">Precio: ${{ producto.precio|intcomma }}</li>
-                        <li class="list-group-item">Stock: {{ producto.cantidad}}</li>
-                      </ul>
-                      
-                      <div class="card-text">
-                          <form action="{% url 'agregar_al_carrito' producto.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-primary">Agregar al carrito</button>
-                           </form>
-                        </div>
-                    
-                    </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<main class="container">
+  <h1 class="text-center">Productos</h1>
+  <p>Valor del dólar: <span id="valor_dolar"></span></p>
+  <br>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for producto in productos %}
+          <div class="col">
+            <div class="card">
+              <a href="{% url 'detalle' producto.id  %}">
+                  <img src="{{ MEDIA_URL }}/media/{{ producto.imagen }}"class="card-img-top" alt="...">
+              </a>
+              <div class="card-body">
+                <h5 class="card-title">{{producto.titulo}}</h5>
+                <p class="card-text">{{ producto.descripcion }}</p>
+                <ul class = "list-group list-group-flush">
+                  <li class="list-group-item">Precio: ${{ producto.precio|intcomma }}</li>
+                  <li class="list-group-item">Stock: {{ producto.cantidad}}</li>
+                </ul>
+                
+                <div class="card-text">
+                    <form action="{% url 'agregar_al_carrito' producto.id %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-primary">Agregar al carrito</button>
+                      </form>
                   </div>
-                </div>
+              
+              </div>
+            </div>
+          </div>
+      {% endfor %}
+  </div>
+</main>
 
-            {% endfor %}
-        </div>
+<script>
+  function obtenerValorDolar() {
+      $.ajax({
+          url: '/actualizar_moneda/',
+          type: 'GET',
+          success: function(response) {
+              $('#valor_dolar').text(response.valor_dolar);
+          },
+          error: function(xhr, status, error) {
+              console.error('Error al obtener el valor del dólar:', error);
+          }
+      });
+  }
+
+  $(document).ready(function() {
+      obtenerValorDolar();  // Ejecutar la función al cargar la página
+  });
+</script>
+
 {% endblock %}
