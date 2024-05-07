@@ -21,8 +21,10 @@ urlpatterns = [
     path('categoria/<int:categoria_id>/', views.productos_por_categoria, name='productos_por_categoria'),
     path('carrito/', views.carrito, name='carrito'),
     path('carrito/agregar/<int:id>/', views.agregar_al_carrito, name='agregar_al_carrito'),
-    path('carrito/eliminar/<int:carritoitem_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
+    path('carrito/eliminar/<int:product_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
     path('carrito/vaciar/', views.vaciar_carrito, name='vaciar_carrito'),
+    path('carrito/aumentar/<int:product_id>/', views.aumentar_cantidad, name='aumentar_cantidad'),
+    path('carrito/disminuir/<int:product_id>/', views.disminuir_cantidad, name='disminuir_cantidad'),
     path('actualizar_moneda/', views.actualizar_moneda, name='actualizar_moneda')
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

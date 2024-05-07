@@ -103,35 +103,71 @@ def registrar(request):
                 })  
    
 def carrito(request):
-    items = CarritoItem.objects.all()
-    total_carrito = sum(item.subtotal() for item in items)
+    # Obtener el carrito del request
+    cart = request.session.get('cart', {})
+    items = []
+    total_carrito = 0
+    
+    # Recorrer los elementos del carrito y calcular el total
+    for item_id, quantity in cart.items():
+        product = get_object_or_404(Producto, pk=item_id)
+        subtotal = product.precio * quantity
+        items.append({'id':item_id,'product': product, 'quantity': quantity,
+                      'precio': product.precio,'imagen':product.imagen, 'subtotal': subtotal})
+        total_carrito += subtotal
     return render(request, 'carrito.html', {'items': items, 'total_carrito': total_carrito})
 
-    
-def agregar_al_carrito(request, id): # Falta agregar de que no redirija y solo lo agregue al carrito mostrando un mensaje de que se agrego algo blabla.
-    product = get_object_or_404(Producto, pk=id)
-    User = get_user_model()
-    user = User.objects.get_or_create(username='usuario_anonimo')[0]
+def agregar_al_carrito(request, id):
+    # Obtener el ID del producto y la cantidad del POST request
+    product_id = id
+    quantity = int(request.POST.get('quantity', 1))
 
-    carrito_item, created = CarritoItem.objects.get_or_create(
-        producto=product,
-        usuario=user,
-        precio_unitario=product.precio  # Asignar el precio del post al campo precio_unitario
-    )
+    # Obtener el carrito del request
+    cart = request.session.get('cart', {})
 
-    if not created:
-        carrito_item.cantidad += 1
-        carrito_item.save()
+    # Actualizar el carrito con el nuevo artículo
+    cart[product_id] = cart.get(product_id, 0) + quantity
 
+    # Guardar el carrito en la sesión del usuario
+    request.session['cart'] = cart
+    print(cart)
     return redirect('carrito')
 
-def eliminar_del_carrito(request, carritoitem_id):
-    carrito_item = get_object_or_404(CarritoItem, pk=carritoitem_id)
-    carrito_item.delete()
+def eliminar_del_carrito(request, product_id):
+    # Obtener el carrito del request
+    cart = request.session.get('cart', {})
+    product_id_str = str(product_id)
+    # Eliminar el producto del carrito
+    if product_id_str in cart:
+        print("Eliminando producto", product_id_str)
+        del cart[product_id_str]
+
+    # Guardar el carrito actualizado en la sesión del usuario
+    request.session['cart'] = cart
+
     return redirect('carrito')
 
 def vaciar_carrito(request):
-    CarritoItem.objects.all().delete()
+    # Vaciar el carrito eliminando todos los elementos
+    request.session['cart'] = {}
+
+    return redirect('carrito')
+
+
+def aumentar_cantidad(request, product_id):
+    cart = request.session.get('cart', {})
+    product_id_str = str(product_id)
+    if product_id_str in cart:
+        cart[product_id_str] += 1
+    request.session['cart'] = cart
+    return redirect('carrito')
+
+def disminuir_cantidad(request, product_id):
+    cart = request.session.get('cart', {})
+    product_id_str = str(product_id)
+    if product_id_str in cart and cart[product_id_str] > 1:
+        cart[product_id_str] -= 1
+    request.session['cart'] = cart
     return redirect('carrito')
 
 def ingreso(request):
