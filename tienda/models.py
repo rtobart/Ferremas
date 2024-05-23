@@ -36,7 +36,7 @@ class Producto(models.Model):
     cantidad = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.titulo + ' - Por ' + self.user.username
+        return self.titulo
     
 class CarritoItem(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)

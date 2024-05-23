@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto, Categoria, CustomUser, CarritoItem
+from src.modules.product.controller import ProductController
+from src.modules.category.controller import CategoryController
+from .models import CustomUser, CarritoItem
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -7,44 +10,44 @@ from django.db import IntegrityError
 from django.db.models import Q
 from .forms import ProductoForm
 import locale
+from datetime import datetime
+import requests
+from django.http import Http404, JsonResponse
 
+# CONTROLLERS
+product_controller = ProductController()
+category_controller = CategoryController()
 
-def home(request): #Solo inicio de la página
-    productos = Producto.objects.filter(aprobado=True, relevante=True).order_by('-aprobado')
-    categorias = Categoria.objects.all()
-    usuarios = CustomUser.objects.all()
+def actualizar_moneda(request):
+    valor_dolar = moneda()
+    return JsonResponse({'valor_dolar': valor_dolar})
+
+def obtener_fecha_actual():
+    return datetime.now().strftime('%d-%m-%Y')
+
+fecha_hoy = obtener_fecha_actual()
+urlapiusd = f'https://mindicador.cl/api/dolar/{fecha_hoy}'
+
+def moneda():
+    global fecha_hoy
+    global urlapiusd
+    hoy = obtener_fecha_actual()
     
-    if request.user.is_authenticated:
-        user = request.user
-        productos_by_user = productos.filter(user=user)
-        num_productos = productos_by_user.count()
-        
-        context = {
-            'productos': productos,
-            'num_productos': num_productos,
-            'categorias': categorias,
-            #'usuarios': usuarios
-        }
-        return render(request, 'home.html', context)
+    if hoy != fecha_hoy:
+        print(f"Fecha actual diferente a la fecha almacenada se acutaliza la fecha a {hoy}")
+        fecha_hoy = hoy
+        urlapiusd = f'https://mindicador.cl/api/dolar/{fecha_hoy}'
+
+    response = requests.get(urlapiusd)
+    data = response.json()
+    valorusd = None
+
+    if response.status_code == 200:
+        valorusd = data["serie"][0]["valor"]
+        print("Valor del dólar:", valorusd)
     else:
-        context = {
-            'productos': productos,
-            'categorias': categorias,
-            #'usuarios': usuarios
-        }
-        return render(request, 'home.html', context)
-    
-def productos(request):
-    productos = Producto.objects.all()
-    categorias = Categoria.objects.all()
-    context = {
-        'productos': productos,
-        'categorias': categorias
-    }
-    return render(request, 'productos.html', context)
-    
-    
-    
+        print("No se pudo obtener el valor del dólar")
+    return (valorusd)
     
 #@login_required   #Desactivado para pruebas    
 def registrar(request):
@@ -70,35 +73,71 @@ def registrar(request):
                 })  
    
 def carrito(request):
-    items = CarritoItem.objects.all()
-    total_carrito = sum(item.subtotal() for item in items)
+    # Obtener el carrito del request
+    cart = request.session.get('cart', {})
+    items = []
+    total_carrito = 0
+    
+    # Recorrer los elementos del carrito y calcular el total
+    for item_id, quantity in cart.items():
+        product = get_object_or_404(Producto, pk=item_id)
+        subtotal = product.precio * quantity
+        items.append({'id':item_id,'product': product, 'quantity': quantity,
+                      'precio': product.precio,'imagen':product.imagen, 'subtotal': subtotal})
+        total_carrito += subtotal
     return render(request, 'carrito.html', {'items': items, 'total_carrito': total_carrito})
 
-    
-def agregar_al_carrito(request, id): # Falta agregar de que no redirija y solo lo agregue al carrito mostrando un mensaje de que se agrego algo blabla.
-    product = get_object_or_404(Producto, pk=id)
-    User = get_user_model()
-    user = User.objects.get_or_create(username='usuario_anonimo')[0]
+def agregar_al_carrito(request, id):
+    # Obtener el ID del producto y la cantidad del POST request
+    product_id = id
+    quantity = int(request.POST.get('quantity', 1))
 
-    carrito_item, created = CarritoItem.objects.get_or_create(
-        producto=product,
-        usuario=user,
-        precio_unitario=product.precio  # Asignar el precio del post al campo precio_unitario
-    )
+    # Obtener el carrito del request
+    cart = request.session.get('cart', {})
 
-    if not created:
-        carrito_item.cantidad += 1
-        carrito_item.save()
+    # Actualizar el carrito con el nuevo artículo
+    cart[product_id] = cart.get(product_id, 0) + quantity
 
+    # Guardar el carrito en la sesión del usuario
+    request.session['cart'] = cart
+    print(cart)
     return redirect('carrito')
 
-def eliminar_del_carrito(request, carritoitem_id):
-    carrito_item = get_object_or_404(CarritoItem, pk=carritoitem_id)
-    carrito_item.delete()
+def eliminar_del_carrito(request, product_id):
+    # Obtener el carrito del request
+    cart = request.session.get('cart', {})
+    product_id_str = str(product_id)
+    # Eliminar el producto del carrito
+    if product_id_str in cart:
+        print("Eliminando producto", product_id_str)
+        del cart[product_id_str]
+
+    # Guardar el carrito actualizado en la sesión del usuario
+    request.session['cart'] = cart
+
     return redirect('carrito')
 
 def vaciar_carrito(request):
-    CarritoItem.objects.all().delete()
+    # Vaciar el carrito eliminando todos los elementos
+    request.session['cart'] = {}
+
+    return redirect('carrito')
+
+
+def aumentar_cantidad(request, product_id):
+    cart = request.session.get('cart', {})
+    product_id_str = str(product_id)
+    if product_id_str in cart:
+        cart[product_id_str] += 1
+    request.session['cart'] = cart
+    return redirect('carrito')
+
+def disminuir_cantidad(request, product_id):
+    cart = request.session.get('cart', {})
+    product_id_str = str(product_id)
+    if product_id_str in cart and cart[product_id_str] > 1:
+        cart[product_id_str] -= 1
+    request.session['cart'] = cart
     return redirect('carrito')
 
 def ingreso(request):
@@ -147,15 +186,6 @@ def crear(request):
         return render(request, 'crear.html', {
             'form': ProductoForm(),
         })
-        
-def detalle(request, product_id):
-        product = get_object_or_404(Producto, pk=product_id)
-        form = ProductoForm(instance=product)
-        return render(request, 'detalle.html',{
-            'product':product,
-            'form': form
-            }) 
-        
         
 def actualizar(request, product_id):
     if request.method == 'GET':
