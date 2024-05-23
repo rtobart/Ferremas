@@ -10,24 +10,29 @@
       {% for producto in productos %}
           <div class="col">
             <div class="card">
-              <a href="{% url 'detalle' producto.id  %}">
-                  <img src="{{ MEDIA_URL }}/media/{{ producto.imagen }}"class="card-img-top" alt="...">
+              <a href="{% url 'detalle' producto.sku  %}">
+                  <img src="{{ producto.imagen }}"class="card-img-top" alt="...">
               </a>
               <div class="card-body">
-                <h5 class="card-title">{{producto.titulo}}</h5>
+                <h5 class="card-title">{{producto.nombre}}</h5>
                 <p class="card-text">{{ producto.descripcion }}</p>
                 <ul class = "list-group list-group-flush">
-                  <li class="list-group-item">Precio: ${{ producto.precio|intcomma }}</li>
+                  <li class="list-group-item">Precio CLP: 
+                    {% for precio in producto.precio %}
+                        {% if precio.actual %}
+                            ${{precio.CLP|intcomma}}
+                        {% endif %}
+                    {% endfor %}
+                  </li>
+                  <li class="list-group-item">Precio USD: 
+                    {% for precio in producto.precio %}
+                        {% if precio.actual %}
+                            ${{precio.USD|intcomma}}
+                        {% endif %}
+                    {% endfor %}
+                  </li>
                   <li class="list-group-item">Stock: {{ producto.cantidad}}</li>
                 </ul>
-                
-                <div class="card-text">
-                    <form action="{% url 'agregar_al_carrito' producto.id %}" method="post">
-                      {% csrf_token %}
-                      <button type="submit" class="btn btn-primary">Agregar al carrito</button>
-                      </form>
-                  </div>
-              
               </div>
             </div>
           </div>

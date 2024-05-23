@@ -22,8 +22,8 @@
                         {% else %}
                             <div class="carousel-item">
                         {% endif %}
-                            <a href="{% url 'detalle' producto.id  %}">
-                                <img src="{{ MEDIA_URL }}media/{{ producto.imagen }}" class="d-block carousel-image" alt="...">
+                            <a href="{% url 'detalle' producto.sku  %}">
+                                <img src="{{producto.imagen}}" class="d-block carousel-image" alt="...">
                             </a>
                             </div>
                     {% endfor %}
@@ -44,7 +44,7 @@
                         <h2 class="text-center">Categorías</h2>
                         <ul class="list-group">
                             {% for categoria in categorias %}
-                                <li class="list-group-item"><a href="{% url 'productos_por_categoria' categoria.id_categoria %}">{{ categoria.categoria }}</a></li>
+                                <li class="list-group-item"><a href="a">{{ categoria.name }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>

@@ -2,11 +2,11 @@
 {% load humanize%}
 {% block content%}
     <section class="card card-body">
-        <h2 style="display: block; margin: 0 auto; color: rgb(14, 119, 70);"><q>{{product.titulo}}</q></h2>
+        <h2 style="display: block; margin: 0 auto; color: rgb(14, 119, 70);"><q>{{product.nombre}}</q></h2>
         <div class="card card-body" style="display: flex; align-items: center; margin: 20px;">
             
             <img style="border: 1px solid black; border-style: inset; height: auto; max-width: 25%; margin-right: 20px"
-            src="{% url 'home' %}media/{{ product.imagen }}" alt="Errorito" width="70%" height="70%">
+            src="{{ product.imagen }}" alt="Errorito" width="70%" height="70%">
             <br>
             <div class="container">
                 <div class="row justify-content-center">
@@ -24,18 +24,40 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-2" style="background-color: white; border: 1px solid grey;">
-                        <h6>Precio: </h6>
+                        <h6>Precio CLP: </h6>
                     </div>
                     <div class="col-md-8" style="background-color: white; border: 1px solid grey;">
-                        ${{product.precio|intcomma}}
+                        {% for precio in product.precio %}
+                            {% if precio.actual %}
+                                ${{precio.CLP|intcomma}}
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-2" style="background-color: white; border: 1px solid grey;">
-                        <h6>Categoría:</h6>
+                        <h6>Precio USD: </h6>
                     </div>
                     <div class="col-md-8" style="background-color: white; border: 1px solid grey;">
-                        {{product.id_categoria}}
+                        {% for precio in product.precio %}
+                            {% if precio.actual %}
+                                ${{precio.USD|intcomma}}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-2" style="background-color: white; border: 1px solid grey;">
+                        <h6>Categorías:</h6>
+                    </div>
+                    <div class="col-md-8" style="background-color: white; border: 1px solid grey;">
+                        {% for category_id in product.categoria %}
+                            {% for category in categories %}
+                                {% if category.id == category_id %}
+                                    {{category.name}},<br>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>

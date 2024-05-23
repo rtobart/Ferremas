@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto, Categoria, CustomUser, CarritoItem
+from src.modules.product.controller import ProductController
+from src.modules.category.controller import CategoryController
+from .models import CustomUser, CarritoItem
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -9,7 +12,11 @@ from .forms import ProductoForm
 import locale
 from datetime import datetime
 import requests
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
+
+# CONTROLLERS
+product_controller = ProductController()
+category_controller = CategoryController()
 
 def actualizar_moneda(request):
     valor_dolar = moneda()
@@ -41,43 +48,6 @@ def moneda():
     else:
         print("No se pudo obtener el valor del dólar")
     return (valorusd)
-
-
-def home(request): #Solo inicio de la página
-    productos = Producto.objects.filter(aprobado=True, relevante=True).order_by('-aprobado')
-    categorias = Categoria.objects.all()
-    
-    if request.user.is_authenticated:
-        user = request.user
-        productos_by_user = productos.filter(user=user)
-        num_productos = productos_by_user.count()
-        
-        context = {
-            'productos': productos,
-            'num_productos': num_productos,
-            'categorias': categorias,
-            #'usuarios': usuarios
-        }
-        return render(request, 'home.html', context)
-    else:
-        context = {
-            'productos': productos,
-            'categorias': categorias,
-            #'usuarios': usuarios
-        }
-        return render(request, 'home.html', context)
-    
-def productos(request):
-    productos = Producto.objects.all()
-    categorias = Categoria.objects.all()
-    context = {
-        'productos': productos,
-        'categorias': categorias
-    }
-    return render(request, 'productos.html', context)
-    
-    
-    
     
 #@login_required   #Desactivado para pruebas    
 def registrar(request):
@@ -216,15 +186,6 @@ def crear(request):
         return render(request, 'crear.html', {
             'form': ProductoForm(),
         })
-        
-def detalle(request, product_id):
-        product = get_object_or_404(Producto, pk=product_id)
-        form = ProductoForm(instance=product)
-        return render(request, 'detalle.html',{
-            'product':product,
-            'form': form
-            }) 
-        
         
 def actualizar(request, product_id):
     if request.method == 'GET':
