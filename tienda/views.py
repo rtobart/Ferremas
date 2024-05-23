@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto, Categoria, CustomUser, CarritoItem
-from src.views.product.controller import ProductController
-from src.views.category.controller import CategoryController
 from .models import CustomUser, CarritoItem
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate, get_user_model
@@ -14,9 +12,6 @@ from datetime import datetime
 import requests
 from django.http import Http404, JsonResponse
 
-# CONTROLLERS
-product_controller = ProductController()
-category_controller = CategoryController()
 
 def actualizar_moneda(request):
     valor_dolar = moneda()
