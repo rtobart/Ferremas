@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto, Categoria, CustomUser, CarritoItem
-from src.modules.product.controller import ProductController
-from src.modules.category.controller import CategoryController
+from src.views.product.controller import ProductController
+from src.views.category.controller import CategoryController
 from .models import CustomUser, CarritoItem
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate, get_user_model
@@ -207,18 +207,6 @@ def actualizar(request, product_id):
                 'form': form,
                 'error': 'Error al Actualizar'
                 }) 
-   
-def productos_por_categoria(request, categoria_id):
-    categoria = get_object_or_404(Categoria, id_categoria=categoria_id)
-    productos_categoria = Producto.objects.filter(id_categoria=categoria)
-    for producto in productos_categoria:
-        producto.precio_formateado = locale.format_string("%d", producto.precio, grouping=True)
-
-    context = {
-        'categorias': categoria,
-        'productos': productos_categoria
-    }
-    return render(request, 'productos_por.html', context)   
    
 def contacto(request):
     return render(request, 'contacto.html', { 

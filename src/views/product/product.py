@@ -8,7 +8,7 @@ class Precio:
         self.CLP = clp
 
 class Product:
-    def __init__(self, sku: str, activo: bool, precio: List[Precio], categoria: List[str], codigo_producto: str, marca: str, nombre: str, imagen: str, descripcion: str, fecha_creacion: str):
+    def __init__(self, sku: str, activo: bool, precio: List[Precio], categoria: List[str], codigo_producto: str, marca: str, nombre: str, imagen: str, descripcion: str, fecha_creacion: str, stock: int):
         self.sku = sku
         self.activo = activo
         self.precio = precio
@@ -19,6 +19,7 @@ class Product:
         self.imagen = imagen
         self.descripcion = descripcion
         self.fecha_creacion = fecha_creacion
+        self.stock = stock
     def __str__(self):
         return self.nombre
 
@@ -27,3 +28,5 @@ class Products:
         self.product_list = product_list
     def __getitem__(self, index):
         return self.product_list[index]
+    def get_by_categoria(self, categoria: str) -> List[Product]:
+        return [product for product in self.product_list if categoria in product.categoria]
