@@ -44,7 +44,7 @@
                         <h2 class="text-center">Categorías</h2>
                         <ul class="list-group">
                             {% for categoria in categorias %}
-                                <li class="list-group-item"><a href="a">{{ categoria.name }}</a></li>
+                                <li class="list-group-item"><a href="{% url 'productos_por_categoria' categoria.id %}">{{ categoria.name }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>

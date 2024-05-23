@@ -6,15 +6,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 # VIEWS
-from src.views.home.view import home
-from src.views.product.view import productos
-from src.views.detail.view import detalle
+from src.views.home.component import home
+from src.views.product.component import productos, productos_por_categoria
+from src.views.detail.component import detalle
 
 
 urlpatterns = [
     path('', home, name='home'),
     path('productos/', productos, name='productos'),
     path('detalle/<str:product_id>/', detalle, name='detalle'),
+    path('categoria/<str:categoria_id>/', productos_por_categoria, name='productos_por_categoria'),
     
     path('admin/', admin.site.urls),
     path('contacto/', views.contacto, name='contacto'),
@@ -25,7 +26,6 @@ urlpatterns = [
     path('crear/', views.crear, name='crear'),
     # path('borrar/', views.home, name='borrar'),
     path('producto/<int:product_id>/', views.actualizar, name='actualizar'),
-    path('categoria/<int:categoria_id>/', views.productos_por_categoria, name='productos_por_categoria'),
     path('carrito/', views.carrito, name='carrito'),
     path('carrito/agregar/<int:id>/', views.agregar_al_carrito, name='agregar_al_carrito'),
     path('carrito/eliminar/<int:product_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),

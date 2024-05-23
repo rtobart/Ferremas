@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from src.modules.category.controller import CategoryController
-from src.modules.product.controller import ProductController
-from src.views.product.view import productos
+from src.views.category.controller import CategoryController
+from src.views.product.controller import ProductController
+from src.views.product.component import productos
 
 product_controller = ProductController()
 category_controller = CategoryController()

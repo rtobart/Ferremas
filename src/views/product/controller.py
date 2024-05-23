@@ -17,3 +17,10 @@ class ProductController:
         response = Response(_response['result'], _response['data'])
         products = Products(response.data)
         return products
+    
+    def get_by_category(self, category):
+        request = GetInterface(f'tool/filter/category/{category}')
+        _response = self.api_service.get(request)
+        response = Response(_response['result'], _response['data'])
+        products = Products(response.data)
+        return products
