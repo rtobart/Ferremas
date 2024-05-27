@@ -8,34 +8,7 @@
   <br>
   <div class="row row-cols-1 row-cols-md-3 g-4">
       {% for producto in productos %}
-          <div class="col">
-            <div class="card">
-              <a href="{% url 'detalle' producto.sku  %}">
-                  <img src="{{ producto.imagen }}"class="card-img-top" alt="...">
-              </a>
-              <div class="card-body">
-                <h5 class="card-title">{{producto.nombre}}</h5>
-                <p class="card-text">{{ producto.descripcion }}</p>
-                <ul class = "list-group list-group-flush">
-                  <li class="list-group-item">Precio CLP: 
-                    {% for precio in producto.precio %}
-                        {% if precio.actual %}
-                            ${{precio.CLP|intcomma}}
-                        {% endif %}
-                    {% endfor %}
-                  </li>
-                  <li class="list-group-item">Precio USD: 
-                    {% for precio in producto.precio %}
-                        {% if precio.actual %}
-                            ${{precio.USD|intcomma}}
-                        {% endif %}
-                    {% endfor %}
-                  </li>
-                  <li class="list-group-item">Stock: {{ producto.stock}} unidades</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+        {% include 'product-cart-component.html' %}
       {% endfor %}
   </div>
 </main>

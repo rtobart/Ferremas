@@ -1,5 +1,4 @@
 {% load static %}
-<!-- {% load humanize %} -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,7 +11,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     
-    <!-- IMPORTACIONES JavaScript-->
+    <script type="module" src="{% static 'js/components/add-to-cart-button.js' %}"></script>
+
     <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
     <script src="{% static 'js/funciones.js' %}"></script>
 </head>
@@ -37,28 +37,17 @@
                                 <a class="nav-link" href="{% url 'contacto' %}">Contacto</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'carrito' %}">Carrito</a>
+                                <a class="nav-link" href="{% url 'precart' %}">Carrito</a>
                             </li>
-                            {% if user.is_authenticated %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'crear' %}">Crear Producto</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Hola, {{user.username}}, Tu Rol es {{user.rol}}
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a class="dropdown-item" href="{% url 'cerrar' %}">Cerrar Sesion</a></li>
-                                    </ul>
-                                </li>
-                            {% else %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'registrar' %}">Registrarse</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'ingreso' %}">Ingresar</a>
-                                </li>
-                            {% endif %}
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="btn-registrarse" href="{% url 'registrar' %}">Registrarse</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="btn-ingresar" href="{% url 'ingreso' %}">Ingresar</a>
+                            </li>
+                                <a class="nav-link" id="btn-logout" href="{% url 'home' %}">Cerrar Sesion</a>
+                            </li>
                         </ul>
                         <div class="ms-auto">
                             <form class="d-flex nav-item sin-estilo" style="margin: 0;" action="{% url 'buscar' %}">
@@ -85,4 +74,26 @@
         <a href="/">Privacidad</a>
     </div>
 </footer>
+<script>
+    // Verificar si hay un token en sessionStorage
+    const token = sessionStorage.getItem('token');
+
+    if (token) {
+        // Ocultar los botones de registrarse e ingresar
+        document.getElementById('btn-registrarse').style.display = 'none';
+        document.getElementById('btn-ingresar').style.display = 'none';
+
+        // Mostrar el botón de logout y agregar un evento para borrar el token
+        const btnLogout = document.getElementById('btn-logout');
+        btnLogout.style.display = 'block';
+        btnLogout.addEventListener('click', function() {
+            sessionStorage.removeItem('token');
+            localStorage.removeItem('shoppingCart');
+            localStorage.removeItem('shoppingCartId');
+            window.location.reload(); // Recargar la página para que los botones vuelvan a aparecer
+        });
+    } else {
+        document.getElementById('btn-logout').style.display = 'none';
+    }
+</script>
 </html>

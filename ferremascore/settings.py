@@ -14,8 +14,8 @@ SECRET_KEY = 'django-insecure-ee9#on@zpsqv663t8%%o%^(yhll-mhy43#mxjwd%l6o5g-(s_q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['web-ferremas.onrender.com','localhost']
-# ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['web-ferremas.onrender.com','localhost']
+ALLOWED_HOSTS = []
 SECUURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 # Application definition
@@ -55,6 +55,14 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'src/views/home'),
             os.path.join(BASE_DIR, 'src/views/detail'),
             os.path.join(BASE_DIR, 'src/views/product'),
+            os.path.join(BASE_DIR, 'src/views/shoppingCart'),
+            os.path.join(BASE_DIR, 'src/views/register'),
+            os.path.join(BASE_DIR, 'src/views/user'),
+            os.path.join(BASE_DIR, 'src/views/savetoken'),
+            os.path.join(BASE_DIR, 'src/views/login'),
+            os.path.join(BASE_DIR, 'src/views/webpay'),
+            os.path.join(BASE_DIR, 'src/views/order'),
+            os.path.join(BASE_DIR, 'src/components'),
             ],
         'APP_DIRS': True,
         'OPTIONS': {

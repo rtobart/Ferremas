@@ -1,0 +1,15 @@
+<body>
+    <script>
+        const token = '{{ token }}';
+        let shoppingCart = '{{ shopping_cart|escapejs }}';
+        let shoppingCartId = '{{ shopping_cart_id }}';
+        shoppingCart = shoppingCart.replace(/'/g, '"');
+        shoppingCart = JSON.parse(shoppingCart);
+        sessionStorage.setItem('token', '{{ token }}');
+        sessionStorage.setItem('mail', '{{ mail }}');
+        localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart));
+        localStorage.setItem('shoppingCartId', JSON.stringify(shoppingCartId));
+        window.location.href = '/';
+    </script>
+</body>
+</html>

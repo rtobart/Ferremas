@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<main class="container py-5">
+
+  <section class="card card-body">
+    <div class="row">
+      <div class="col-md-10 offset-md-1">
+        <h1 class="text-center display-3 py-5">WEBPAY</h1>
+        <p class="text-center">Total a pagar: ${{ totalCLP|intcomma }}</p>
+        <p class="text-center">Haz click en el botón para pagar con Webpay.</p>
+        <!-- Formulario de Webpay -->
+        <form method="post" action="{{ url }}">
+            <input type="hidden" name="token_ws" value="{{ token }}" />
+            <input type="submit" value="Ir a pagar" />
+          </form>
+    </div>
+  </section>
+</main>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<main class="container py-5">
+
+  <section class="card card-body">
+    <div class="row">
+      <div class="col-md-10 offset-md-1">
+        
+        <h1 class="text-center display-3 py-5">Carrito de Compras</h1>
+        {% if productos %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          {% for producto in productos %}
+            <div class>
+              {% include 'product-shopping-component.html' %}
+            </div>
+          {% endfor %}
+
+        </div>
+        <script>
+          let preciosCLP = document.querySelectorAll('.precio-clp');
+          let totalCLP = 0;
+          
+          // Itera sobre los elementos de precio y suma los valores
+          preciosCLP.forEach(function(precio) {
+            // Elimina los puntos antes de convertir a número
+            const precioSinPuntos = precio.textContent.replace(/\./g, '');
+            totalCLP += Number(precioSinPuntos.replace(/[^0-9.-]+/g,""));
+          });
+        
+          // Haz lo mismo para los precios en USD
+          let preciosUSD = document.querySelectorAll('.precio-usd');
+          let totalUSD = 0;
+        
+          preciosUSD.forEach(function(precio) {
+            totalUSD += Number(precio.textContent.replace(/[^0-9.-]+/g,""));
+          });
+        
+          // Ahora puedes usar totalCLP y totalUSD donde necesites
+          console.log(totalCLP, totalUSD);
+        </script>
+        {% else %}
+          <p class="text-center">Tu carrito está vacío.</p>
+        {% endif %}
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div id="total-clp" style="background-color: #f8f9fa; padding: 10px; margin: 10px; border-radius: 5px;"></div>
+          <div id="total-usd" style="background-color: #f8f9fa; padding: 10px; margin: 10px; border-radius: 5px;"></div>
+        </div>
+        <div style="display: flex; justify-content: center;">
+          <button id="vaciar-carrito" class="btn btn-danger">Vaciar Carrito</button>
+          <a href="{% url 'productos'  %}" class="btn-volver">Seguir agregando</a>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalPago">
+            Pagar
+          </button>
+
+          <div class="modal fade" id="modalPago" tabindex="-1" aria-labelledby="modalPagoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalPagoLabel">Elige una opción de pago</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <a href="/webpay" class="btn btn-primary" style="background-color: purple;">Pagar con Webpay</a>
+                  <script>
+                    const totalCLPElement = document.getElementById('total-clp');
+                    const totalUSDElement = document.getElementById('total-usd');
+                    totalCLPElement.textContent = 'Total CLP: $' + totalCLP;
+                    totalUSDElement.textContent = 'Total USD: $' + totalUSD;
+                    var enlaceWebpay = document.querySelector('.btn.btn-primary');
+                    const cartId = localStorage.getItem('shoppingCartId');
+                    enlaceWebpay.href = `/webpay/${totalCLP}/${cartId}`;
+                  </script>
+                  <button class="btn btn-primary">Pagar con Transferencia</button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="https://www.paypal.com/sdk/js?client-id=AV0vFYVVjODRSGg48OqG2wBwzMBJdtJGY3wqjq6TI3y6BpUDaB57F2-Z5GT6ZURUgnRC8f2tMiwkz2BQ"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
