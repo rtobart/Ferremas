@@ -10,7 +10,8 @@ transaction_controller = TransactionController()
 
 def webpay(request, totalCLP, cartId):
     cartId = cartId.replace('"', '')
-    url = f'http://127.0.0.1:8000/order/{cartId}'
+    url = f'https://web-ferremas.onrender.com/order/{cartId}'
+    # url = f'http://127.0.0.1:8000/order/{cartId}'
     body = {
             "uyOrder": '00001', 
             "sessionId":  '00001', 
