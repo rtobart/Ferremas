@@ -3,7 +3,7 @@ from .httpService import HttpService
 class ApiFerramasService:
     def __init__(self, http_service: HttpService):
         self.http_service = http_service
-        self.route = "http://localhost:3000/api/"
+        self.route = "https://api-ferramas.onrender.com/api/"
 
     def get(self, request):
         return self.http_service.get(self.route, request)

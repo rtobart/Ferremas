@@ -1,9 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
-import json
 from src.views.product.controller import ProductController
 from src.views.category.controller import CategoryController
 from src.views.shoppingCart.controller import ShopingCartController
-import jwt
 
 product_controller = ProductController()
 category_controller = CategoryController()
