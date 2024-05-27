@@ -1,0 +1,10 @@
+<body>
+    <script>
+        const token = '{{ token }}';
+        const shopping_cart = '{{ shopping_cart|escapejs }}';
+        sessionStorage.setItem('token', '{{ token }}');
+        localStorage.setItem('shoppingCart', shopping_cart);
+        window.location.href = '/';
+    </script>
+</body>
+</html>

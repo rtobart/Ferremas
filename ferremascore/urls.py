@@ -9,6 +9,22 @@ from django.conf.urls.static import static
 from src.views.home.component import home
 from src.views.product.component import productos, productos_por_categoria
 from src.views.detail.component import detalle
+from src.views.shoppingCart.component import carrito, precart, loadcart
+from src.views.register.component import registrar
+from src.views.savetoken.component import load_user, save_token
+from src.views.login.component import ingreso
+from django.urls import register_converter
+
+class ListConverter:
+    regex = '[^/]+'
+
+    def to_python(self, value):
+        return value.split(',')
+
+    def to_url(self, value):
+        return ','.join(value)
+
+register_converter(ListConverter, 'list')
 
 
 urlpatterns = [
@@ -16,22 +32,27 @@ urlpatterns = [
     path('productos/', productos, name='productos'),
     path('detalle/<str:product_id>/', detalle, name='detalle'),
     path('categoria/<str:categoria_id>/', productos_por_categoria, name='productos_por_categoria'),
+    path('registrar/', registrar, name='registrar'),
+    path('save-token/<str:token>/', save_token, name='save_token'),
+    path('load-user/<str:token>/<str:mail>', load_user, name='load_user'),
+    path('ingreso/', ingreso, name='ingreso'),
+    # path('carrito/', carrito, name='carrito'),
+    path('precart/', precart, name='precart'),
+    path('loadcart/<list:items>', loadcart, name='loadcart'),
+    path('carrito/', carrito, name='carrito'),
     
     path('admin/', admin.site.urls),
     path('contacto/', views.contacto, name='contacto'),
-    path('registrar/', views.registrar, name='registrar'),
-    path('ingreso/', views.ingreso, name='ingreso'),
     path('cerrar/', views.cerrar, name='cerrar'),
     path('buscar/', views.buscar, name='buscar'),
     path('crear/', views.crear, name='crear'),
     # path('borrar/', views.home, name='borrar'),
-    path('producto/<int:product_id>/', views.actualizar, name='actualizar'),
-    path('carrito/', views.carrito, name='carrito'),
-    path('carrito/agregar/<int:id>/', views.agregar_al_carrito, name='agregar_al_carrito'),
-    path('carrito/eliminar/<int:product_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
-    path('carrito/vaciar/', views.vaciar_carrito, name='vaciar_carrito'),
-    path('carrito/aumentar/<int:product_id>/', views.aumentar_cantidad, name='aumentar_cantidad'),
-    path('carrito/disminuir/<int:product_id>/', views.disminuir_cantidad, name='disminuir_cantidad'),
+    # path('producto/<int:product_id>/', views.actualizar, name='actualizar'),
+    # path('carrito/agregar/<int:id>/', views.agregar_al_carrito, name='agregar_al_carrito'),
+    # path('carrito/eliminar/<int:product_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
+    # path('carrito/vaciar/', views.vaciar_carrito, name='vaciar_carrito'),
+    # path('carrito/aumentar/<int:product_id>/', views.aumentar_cantidad, name='aumentar_cantidad'),
+    # path('carrito/disminuir/<int:product_id>/', views.disminuir_cantidad, name='disminuir_cantidad'),
     path('actualizar_moneda/', views.actualizar_moneda, name='actualizar_moneda')
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
