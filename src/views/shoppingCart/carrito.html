@@ -50,10 +50,15 @@
         <div style="display: flex; justify-content: center;">
           <button id="vaciar-carrito" class="btn btn-danger">Vaciar Carrito</button>
           <a href="{% url 'productos'  %}" class="btn-volver">Seguir agregando</a>
-          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalPago">
+          <button type="button" class="btn btn-success" id="boton-pago" data-bs-toggle="modal" data-bs-target="#modalPago" style="display: none;">
             Pagar
           </button>
-
+          <script>
+            var botonPago = document.getElementById('boton-pago');
+            if (sessionStorage.getItem('token')) {
+              botonPago.style.display = 'block';
+            }
+          </script>
           <div class="modal fade" id="modalPago" tabindex="-1" aria-labelledby="modalPagoLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
