@@ -8,14 +8,14 @@
         <h5 class="card-title">{{ producto.nombre }}</h5>
         <p class="card-text">{{ producto.descripcion }}</p>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">Precio CLP: 
+          <li class="list-group-item precio-clp">Precio CLP: 
             {% for precio in producto.precio %}
                 {% if precio.actual %}
                     ${{ precio.CLP|intcomma }}
                 {% endif %}
             {% endfor %}
           </li>
-          <li class="list-group-item">Precio USD: 
+          <li class="list-group-item precio-usd">Precio USD: 
             {% for precio in producto.precio %}
                 {% if precio.actual %}
                     ${{ precio.USD|intcomma }}

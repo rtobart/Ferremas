@@ -1,3 +1,4 @@
+import ast
 from django.contrib import admin
 from django.urls import path
 
@@ -14,15 +15,15 @@ from src.views.register.component import registrar
 from src.views.savetoken.component import load_user, save_token
 from src.views.login.component import ingreso
 from django.urls import register_converter
+from src.views.order.component import order
+from src.views.webpay.component import webpay
 
 class ListConverter:
     regex = '[^/]+'
-
     def to_python(self, value):
-        return value.split(',')
-
+        return ast.literal_eval(value)
     def to_url(self, value):
-        return ','.join(value)
+        return str(value)
 
 register_converter(ListConverter, 'list')
 
@@ -38,8 +39,10 @@ urlpatterns = [
     path('ingreso/', ingreso, name='ingreso'),
     # path('carrito/', carrito, name='carrito'),
     path('precart/', precart, name='precart'),
-    path('loadcart/<list:items>', loadcart, name='loadcart'),
+    path('loadcart/<list:items>/<str:mail>', loadcart, name='loadcart'),
     path('carrito/', carrito, name='carrito'),
+    path('order/<str:order_id>', order, name='order'),
+    path('webpay/<int:totalCLP>/<str:cartId>', webpay, name='webpay'),
     
     path('admin/', admin.site.urls),
     path('contacto/', views.contacto, name='contacto'),

@@ -1,8 +1,8 @@
 <body>
     <script>
         const items = localStorage.getItem('shoppingCart');
-        
-        window.location.href = `/loadcart/${items}`;
+        const mail = sessionStorage.getItem('mail');
+        window.location.href = `/loadcart/${items}/${mail}`;
     </script>
 </body>
 </html>

@@ -60,6 +60,8 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'src/views/user'),
             os.path.join(BASE_DIR, 'src/views/savetoken'),
             os.path.join(BASE_DIR, 'src/views/login'),
+            os.path.join(BASE_DIR, 'src/views/webpay'),
+            os.path.join(BASE_DIR, 'src/views/order'),
             os.path.join(BASE_DIR, 'src/components'),
             ],
         'APP_DIRS': True,

@@ -29,3 +29,12 @@ class ShopingCartController:
         response = Response(_response['result'], _response['data'])
         return response.data
     
+    def add_product_to_shopping_cart(self, mail: str, products: str):
+        body = {
+            'mail': mail,
+            'tools': products
+        }
+        request = PostInterface("shoping-cart/add", body)
+        _response = self.api_service.post(request)
+        response = Response(_response['result'], _response['data'])
+        return response.data

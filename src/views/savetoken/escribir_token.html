@@ -1,9 +1,14 @@
 <body>
     <script>
         const token = '{{ token }}';
-        const shopping_cart = '{{ shopping_cart|escapejs }}';
+        let shoppingCart = '{{ shopping_cart|escapejs }}';
+        let shoppingCartId = '{{ shopping_cart_id }}';
+        shoppingCart = shoppingCart.replace(/'/g, '"');
+        shoppingCart = JSON.parse(shoppingCart);
         sessionStorage.setItem('token', '{{ token }}');
-        localStorage.setItem('shoppingCart', shopping_cart);
+        sessionStorage.setItem('mail', '{{ mail }}');
+        localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart));
+        localStorage.setItem('shoppingCartId', JSON.stringify(shoppingCartId));
         window.location.href = '/';
     </script>
 </body>

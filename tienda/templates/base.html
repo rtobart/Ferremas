@@ -40,14 +40,14 @@
                                 <a class="nav-link" href="{% url 'precart' %}">Carrito</a>
                             </li>
 
-                                <li class="nav-item">
-                                    <a class="nav-link" id="btn-registrarse" href="{% url 'registrar' %}">Registrarse</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="btn-ingresar" href="{% url 'ingreso' %}">Ingresar</a>
-                                </li>
-                                    <a class="nav-link" id="btn-logout" href="{% url 'home' %}">Cerrar Sesion</a>
-                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="btn-registrarse" href="{% url 'registrar' %}">Registrarse</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="btn-ingresar" href="{% url 'ingreso' %}">Ingresar</a>
+                            </li>
+                                <a class="nav-link" id="btn-logout" href="{% url 'home' %}">Cerrar Sesion</a>
+                            </li>
                         </ul>
                         <div class="ms-auto">
                             <form class="d-flex nav-item sin-estilo" style="margin: 0;" action="{% url 'buscar' %}">
@@ -89,6 +89,7 @@
         btnLogout.addEventListener('click', function() {
             sessionStorage.removeItem('token');
             localStorage.removeItem('shoppingCart');
+            localStorage.removeItem('shoppingCartId');
             window.location.reload(); // Recargar la página para que los botones vuelvan a aparecer
         });
     } else {
