@@ -5,7 +5,6 @@ from src.views.shoppingCart.controller import ShopingCartController
 shopping_cart_controller = ShopingCartController()
 
 def save_token(request, token):
-    
     return render(request, 'escribir_token.html', {'token': token})
 
 def load_user(request, token, mail):

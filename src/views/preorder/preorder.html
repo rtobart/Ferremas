@@ -3,5 +3,11 @@
 {% block content %}
 <main class="container">
   <h1 class="text-center"> {{status}}  </h1>
+  {% if status == 'AUTHORIZED' %}
+    <h2 class="text-center">Codigo de orden: {{ order_id }}</h2>
+    <script>
+      localStorage.setItem('shoppingCart', JSON.stringify([]));
+    </script>
+  {% else %}
 </main>
 {% endblock %}

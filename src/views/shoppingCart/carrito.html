@@ -39,24 +39,31 @@
         
           // Ahora puedes usar totalCLP y totalUSD donde necesites
           console.log(totalCLP, totalUSD);
+          let stateCart = true;
         </script>
         {% else %}
           <p class="text-center">Tu carrito está vacío.</p>
+          <script>
+            stateCart = false;
+          </script>
         {% endif %}
         <div style="display: flex; flex-direction: column; align-items: center;">
           <div id="total-clp" style="background-color: #f8f9fa; padding: 10px; margin: 10px; border-radius: 5px;"></div>
+          <div id="descuentoCLP" style="background-color: #f2ffa7; padding: 10px; margin: 10px; border-radius: 5px; display:none"></div>
           <div id="total-usd" style="background-color: #f8f9fa; padding: 10px; margin: 10px; border-radius: 5px;"></div>
+          <div id="descuentoUSD" style="background-color: #f2ffa7; padding: 10px; margin: 10px; border-radius: 5px; display:none"></div>
+          <div id="total_con_descuento" style="background-color: #c6ffa7; padding: 10px; margin: 10px; border-radius: 5px; display:none"></div>
         </div>
         <div style="display: flex; justify-content: center;">
           <button id="vaciar-carrito" class="btn btn-danger">Vaciar Carrito</button>
           <a href="{% url 'productos'  %}" class="btn-volver">Seguir agregando</a>
-          <button type="button" class="btn btn-success" id="boton-pago" data-bs-toggle="modal" data-bs-target="#modalPago" style="display: none;">
+          <button type="button" class="btn btn-success" id="boton-pago" data-bs-toggle="modal" data-bs-target="#modalPago" style="display: block;">
             Pagar
           </button>
           <script>
             var botonPago = document.getElementById('boton-pago');
-            if (sessionStorage.getItem('token')) {
-              botonPago.style.display = 'block';
+            if (stateCart === false) {
+              botonPago.style.display = 'none';
             }
           </script>
           <div class="modal fade" id="modalPago" tabindex="-1" aria-labelledby="modalPagoLabel" aria-hidden="true">
@@ -67,17 +74,40 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <a href="/webpay" class="btn btn-primary" style="background-color: purple;">Pagar con Webpay</a>
+                  <a href="/webpay" class="btn btn-primary" id="webpay-btn" style="background-color: purple; display:none">Pagar con Webpay</a>
                   <script>
+
+                    var botonPago = document.getElementById('webpay-btn');
+                    if (sessionStorage.getItem('token')) {
+                      botonPago.style.display = 'block';
+                    }
+
                     const totalCLPElement = document.getElementById('total-clp');
+                    var lblDescuentoCLP = document.getElementById('descuentoCLP');
+                    var lblDescuentoUSD = document.getElementById('descuentoUSD');
+                    var total_con_descuento = document.getElementById('total_con_descuento');
                     const totalUSDElement = document.getElementById('total-usd');
                     totalCLPElement.textContent = 'Total CLP: $' + totalCLP;
                     totalUSDElement.textContent = 'Total USD: $' + totalUSD;
                     var enlaceWebpay = document.querySelector('.btn.btn-primary');
                     const cartId = localStorage.getItem('shoppingCartId');
-                    enlaceWebpay.href = `/webpay/${totalCLP}/${cartId}`;
+                    const mail = sessionStorage.getItem('mail');
+                    let newTotal = totalCLP;
+                    if (sessionStorage.getItem('token')) {
+                      lblDescuentoCLP.textContent = 'Descuento cliente CLP: $' + totalCLP *0.1
+                      lblDescuentoCLP.style.display = 'block'
+                      lblDescuentoUSD.textContent = 'Descuento cliente USD: $' + totalUSD *0.1
+                      lblDescuentoUSD.style.display = 'block'
+                      newTotal = totalCLP *0.9
+                      total_con_descuento.textContent = 'Total CLP con descuento: $' + newTotal
+                      total_con_descuento.style.display = 'block'
+                    }
+                    console.log(totalCLP, cartId, mail);
+                    const amount = newTotal
+                    enlaceWebpay.href = `/webpay/${amount}/${cartId}/${mail}`;
                   </script>
-                  <button class="btn btn-primary">Pagar con Transferencia</button>
+                  <br>
+                  <button class="btn btn-primary" style="display:block">Pagar con Transferencia</button>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

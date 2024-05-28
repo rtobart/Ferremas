@@ -4,17 +4,22 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from src.services.apiFerramas import ApiFerramasService
 from src.views.user.controller import UserController
 from src.views.webpay.controller import TransactionController
+import datetime
+
 
 user_controller = UserController()
 transaction_controller = TransactionController()
 
-def webpay(request, totalCLP, cartId):
+def webpay(request, totalCLP, cartId, mail):
     cartId = cartId.replace('"', '')
     url = f'https://web-ferramas.onrender.com/order/{cartId}'
-    # url = f'http://127.0.0.1:8000/order/{cartId}'
+    # url = f'http://127.0.0.1:8000/preorder/'
+    now = datetime.datetime.now()
+    date_time_string = now.strftime("%Y%m%d%H%M%S")
+    uyOrder = date_time_string + mail
     body = {
-            "uyOrder": '00001', 
-            "sessionId":  '00001', 
+            "uyOrder": uyOrder, 
+            "sessionId":  mail, 
             "amount": totalCLP, 
             "returnUrl": url,
             "cartId": cartId,

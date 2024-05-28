@@ -9,12 +9,16 @@ category_controller = CategoryController()
 shopping_cart_controller = ShopingCartController()
 transaction_controller = TransactionController()
 
-def preorder(request, order_id):
+def preorder(request, order_id, cart_id):
     token_ws = request.GET.get('token_ws', '')
     response = transaction_controller.commit(token_ws)
     print('response', response['status'])
+    status = response['status']
     context = {
-        'status': response['status']
+        'status': status,
+        'order_id': order_id,
     }
+    if status == 'AUTHORIZED':
+        transaction_controller.validate(order_id, cart_id)
     return render(request, 'preorder.html', context)
 

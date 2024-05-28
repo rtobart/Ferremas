@@ -26,4 +26,8 @@ class TransactionController:
         print('response', response)
         token = response.data
         return token
+    
+    def validate(self, order, cart):
+        request = GetInterface(f"transaction/{order}/{cart}")
+        self.api_service.get(request)
 
