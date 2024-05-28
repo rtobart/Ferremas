@@ -22,8 +22,10 @@ def carrito(request):
 
 def loadcart(request, items, mail):
     request.session['items'] = items
-    shopping_cart_controller.add_product_to_shopping_cart(mail, items)
+    if mail != 'null':
+        shopping_cart_controller.add_product_to_shopping_cart(mail, items)
     return redirect('carrito')
 
 def precart(request):
+    request.session['items'] = []
     return render(request, 'precart.html')
