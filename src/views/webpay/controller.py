@@ -16,6 +16,18 @@ class TransactionController:
         _response = self.api_service.post(request)
         response = Response(_response['result'], _response['data'])
         print('response', response)
-        products = response.data
-        return products
+        tx = response.data
+        return tx
+    
+    def commit(self, token):
+        request = GetInterface(f"transaction/{token}")
+        _response = self.api_service.get(request)
+        response = Response(_response['result'], _response['data'])
+        print('response', response)
+        token = response.data
+        return token
+    
+    def validate(self, order, cart):
+        request = GetInterface(f"transaction/{order}/{cart}")
+        self.api_service.get(request)
 

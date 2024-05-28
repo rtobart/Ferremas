@@ -1,8 +1,13 @@
 <body>
     <script>
         const items = localStorage.getItem('shoppingCart');
-        const mail = sessionStorage.getItem('mail');
-        window.location.href = `/loadcart/${items}/${mail}`;
+        if (items === null) {
+            alert('No hay productos en el carrito');
+            window.location.href = '/carrito';
+        } else {
+            const mail = sessionStorage.getItem('mail');
+            window.location.href = `/loadcart/${items}/${mail}`;
+        }
     </script>
 </body>
 </html>

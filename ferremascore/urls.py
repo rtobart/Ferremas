@@ -17,6 +17,7 @@ from src.views.login.component import ingreso
 from django.urls import register_converter
 from src.views.order.component import order
 from src.views.webpay.component import webpay
+from src.views.preorder.component import preorder
 
 class ListConverter:
     regex = '[^/]+'
@@ -42,7 +43,8 @@ urlpatterns = [
     path('loadcart/<list:items>/<str:mail>', loadcart, name='loadcart'),
     path('carrito/', carrito, name='carrito'),
     path('order/<str:order_id>', order, name='order'),
-    path('webpay/<int:totalCLP>/<str:cartId>', webpay, name='webpay'),
+    path('preorder/<str:order_id>/<str:cart_id>', preorder, name='preorder'),
+    path('webpay/<int:totalCLP>/<str:cartId>/<str:mail>', webpay, name='webpay'),
     
     path('admin/', admin.site.urls),
     path('contacto/', views.contacto, name='contacto'),

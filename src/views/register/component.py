@@ -29,11 +29,13 @@ def registrar(request):
                         "error": 'Usuario ya existe'
                     })
                 shopping_cart_products = request.POST['shoppingCart']
+                if shopping_cart_products == '':
+                    shopping_cart_products = '[]'
                 shopping_cart_products = json.loads(shopping_cart_products)
                 shopping_cart_id = shopping_cart_controller.create_shopping_cart(shopping_cart_products, user_data['mail'])
                 user_data["shopingCartId"] = shopping_cart_id
                 token = user_controller.register(user_data)
-                return redirect('save_token', token=token)
+                return redirect('load_user', token=token, mail=user_data['mail'])
             except IntegrityError:
                 return render(request, 'registrar.html',{
                     'form': UserCreationForm,

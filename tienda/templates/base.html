@@ -75,22 +75,18 @@
     </div>
 </footer>
 <script>
-    // Verificar si hay un token en sessionStorage
     const token = sessionStorage.getItem('token');
-
     if (token) {
-        // Ocultar los botones de registrarse e ingresar
         document.getElementById('btn-registrarse').style.display = 'none';
         document.getElementById('btn-ingresar').style.display = 'none';
-
-        // Mostrar el botón de logout y agregar un evento para borrar el token
         const btnLogout = document.getElementById('btn-logout');
         btnLogout.style.display = 'block';
         btnLogout.addEventListener('click', function() {
             sessionStorage.removeItem('token');
+            sessionStorage.removeItem('mail');
             localStorage.removeItem('shoppingCart');
             localStorage.removeItem('shoppingCartId');
-            window.location.reload(); // Recargar la página para que los botones vuelvan a aparecer
+            window.location.reload();
         });
     } else {
         document.getElementById('btn-logout').style.display = 'none';
