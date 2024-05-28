@@ -2,12 +2,18 @@
 {% load humanize %}
 {% block content %}
 <main class="container">
-  <h1 class="text-center"> {{status}}  </h1>
   {% if status == 'AUTHORIZED' %}
+    <h1 class="text-center"> Compra exitosa  </h1>
     <h2 class="text-center">Codigo de orden: {{ order_id }}</h2>
+    <p class="text-center"> Si tienes cargos problemas con tu compra contacta al equipo de soporte soporte@soporte.cl </p>
     <script>
       localStorage.setItem('shoppingCart', JSON.stringify([]));
     </script>
   {% else %}
+    <h1 class="text-center"> Compra Fallida  </h1>
+    <h2 class="text-center">Hubo un error con tu orden</h2>
+    <p class="text-center"> Si tienes cargos realizados por favor comunicate con nuestro equipo de soporte soporte@soporte.cl </p>
+    <button class="btn btn-primary" onclick="window.location.href='/precart'">Volver al carrito</button>
+  {% endif %}
 </main>
 {% endblock %}
